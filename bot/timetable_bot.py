@@ -40,9 +40,11 @@ class TimetableBot:
                 time.sleep(10)
 
     def start_up(self, message):
-        # self.logger.logger(message)
-        # user_id = message.chat.id
-        # user_name = message.from_user.first_name
+        self.logger.add_log(message, log_type="INFO")
+        user_id = message.chat.id
+        user_name = message.from_user.first_name
+        self.bot.send_message(user_id, "Даров, {}".format(user_name))
+
         return 0
 
     def timetable_controller(self, user_id, timespan, time_swing=0):
@@ -101,7 +103,6 @@ class TimetableBot:
 
         if command == "/start":
             self.start_up(message)
-            self.bot.send_message(user_id, "Даров, {}".format(user_name))
             self.keyboard_menu(user_id)
 
         elif command == "/help":
