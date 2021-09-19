@@ -2,6 +2,8 @@ import datetime
 import time
 import math
 
+import threading
+
 import telebot
 from telebot import types
 
@@ -20,7 +22,7 @@ class TimetableBot:
 
         @self.bot.message_handler(content_types=["text"])
         def msg(message):
-            self.message_parse(message)
+            self.control_panel(message)
 
     def run_bot(self):
         self.logger.add_log("INIT SYSTEM CHECK", log_type="INFO", system_message=True)
@@ -38,6 +40,11 @@ class TimetableBot:
             except:
                 self.logger.add_log("BOT FAILED \\ RESTARTING", log_type="ERROR", system_message=True)
                 time.sleep(10)
+
+    def control_panel(self, message):
+        thread = threading.Thread(target=self.message_parse(message))
+
+        thread.start()
 
     def start_up(self, message):
         self.logger.add_log(message, log_type="INFO")
